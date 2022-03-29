@@ -10,12 +10,30 @@ function App() {
   const [films, setFilms] = useState([]);
   const [shoppingCartNumber, setShoppingCartNumber] = useState(0);
   const [cart, setCart] = useState([]);
-  const [visiableCart, setVisiableCart] = useState(false)
+  const [visiableCart, setVisiableCart] = useState(false);
+
+  function removeFavorite(id) {
+    const likedOrNot = films.map((film) => {
+      if (film.id === id) {
+        return { ...film, favorited: false };
+      } else {
+        return film;
+      }
+    });
+
+    setFilms(likedOrNot);
+  }
 
   useEffect(() => {
     fetch("https://ghibliapi.herokuapp.com/films/")
       .then((data) => data.json())
-      .then((data) => setFilms(data));
+      .then((data) => {
+        const favoritedMovies = data.map((movie) => ({
+          ...movie,
+          favorited: false,
+        }));
+        setFilms(favoritedMovies);
+      });
   }, []);
 
   return (
@@ -27,8 +45,9 @@ function App() {
         setShoppingCartNumber,
         cart,
         setCart,
-        visiableCart, 
-        setVisiableCart
+        visiableCart,
+        setVisiableCart,
+        removeFavorite,
       }}
     >
       <Router>

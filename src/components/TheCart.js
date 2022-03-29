@@ -1,27 +1,29 @@
 import { useContext } from "react";
 import { AppContext } from "../contexts/AppContext";
+import Films from "./Films";
 
 function TheCart() {
-  const { visiableCart, cart, setCart } = useContext(AppContext);
+  const { visiableCart, cart, setCart, films, setFilms, removeFavorite } = useContext(AppContext);
 
-  function removeFromFavourites(id) {
-    const cloneCart = [...cart];
-    const indexOfItem = cloneCart.indexOf();
 
-    if (indexOfItem === -1) {
-      cloneCart.splice(id, 1);
-      setCart(cloneCart);
-    }
-  }
+
+
+
+const tiz = films.filter((film) => {
+  return film.favorited
+})
+
+console.log("favorited test", tiz.title)
+
 
   return (
     <div className="hallo">
       {visiableCart ? (
         <>
-          {cart.map((film, index) => (
+          {tiz.map((film, index) => (
             <li key={index}>
               {film.title}
-              <button onClick={() => removeFromFavourites(index)}>
+              <button onClick={() => removeFavorite(film.id)}>
                 Remove
               </button>
             </li>
